@@ -42,50 +42,53 @@ function ConfirmImage({ route, navigation }) {
   const getResult = async () => {
     // console.log(photoUrl);
     const prediction = "Eiffel Tower";
-    console.log("Starting prediction...")
+    console.log("Starting prediction...");
     let name = "";
 
     try {
-      let googleVisionRes = await fetch("https://vision.googleapis.com/v1/images:annotate?key=" + "AIzaSyB7L122E6_uJGXT6uheNw95q2cmrp7UClQ", {
-        method: 'POST',
-        body: JSON.stringify({
-            "requests": [
-                {
-                    "image": {
-                        "content": base64
-                    },
-                    features: [
-                        { type: "LANDMARK_DETECTION", maxResults: 5 },
-                    ],
-                }
-            ]
-        })
-      });
-        let json = await googleVisionRes.json();
-        // const { image, info, name, wiki } = json;
-        try {
-          name = json["responses"][0]["landmarkAnnotations"][0]["description"];
-        } catch (error) {
-          navigation.navigate("ResultsScreen", {
-            name: "No Data Available",
-            image: "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
-            text: "No information available",
-            url : "https://google.com",
-          });
-          return;
+      let googleVisionRes = await fetch(
+        "https://vision.googleapis.com/v1/images:annotate?key=" +
+          "ENTER GOOGLE CLOUD API KEY",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            requests: [
+              {
+                image: {
+                  content: base64,
+                },
+                features: [{ type: "LANDMARK_DETECTION", maxResults: 5 }],
+              },
+            ],
+          }),
         }
+      );
+      let json = await googleVisionRes.json();
+      // const { image, info, name, wiki } = json;
+      try {
+        name = json["responses"][0]["landmarkAnnotations"][0]["description"];
       } catch (error) {
         navigation.navigate("ResultsScreen", {
           name: "No Data Available",
-          image: "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+          image:
+            "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
           text: "No information available",
-          url : "https://google.com",
+          url: "https://google.com",
         });
         return;
       }
-  
+    } catch (error) {
+      navigation.navigate("ResultsScreen", {
+        name: "No Data Available",
+        image:
+          "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+        text: "No information available",
+        url: "https://google.com",
+      });
+      return;
+    }
 
-    console.log(name)
+    console.log(name);
 
     try {
       let response = await fetch(
@@ -102,13 +105,15 @@ function ConfirmImage({ route, navigation }) {
         }
       );
       let json = await response.json();
-      console.log(json)
+      console.log(json);
       let { image, text, url } = json;
-      if (name === "Colosseum"){
-        image = "https://images.unsplash.com/photo-1561865406-3b94c2e383c2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80"
+      if (name === "Colosseum") {
+        image =
+          "https://images.unsplash.com/photo-1561865406-3b94c2e383c2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80";
       }
-      if (name === "Eiffel Tower"){
-        image = "https://images.unsplash.com/photo-1508051306307-b36f794302a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2306&q=80"
+      if (name === "Eiffel Tower") {
+        image =
+          "https://images.unsplash.com/photo-1508051306307-b36f794302a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2306&q=80";
       }
       if (json["url"]) {
         navigation.navigate("ResultsScreen", {
@@ -121,8 +126,6 @@ function ConfirmImage({ route, navigation }) {
     } catch (error) {
       console.error(error);
     }
-
-
 
     // await tf.ready();
 

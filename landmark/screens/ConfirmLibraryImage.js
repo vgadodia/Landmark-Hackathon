@@ -35,49 +35,53 @@ function ConfirmLibraryImage({ route, navigation }) {
   const getResult = async () => {
     // console.log(photoUrl);
     const prediction = "Taj Mahal";
-    console.log("Starting prediction...")
+    console.log("Starting prediction...");
 
     let name = "";
 
     try {
-      let googleVisionRes = await fetch("https://vision.googleapis.com/v1/images:annotate?key=" + "AIzaSyB7L122E6_uJGXT6uheNw95q2cmrp7UClQ", {
-        method: 'POST',
-        body: JSON.stringify({
-            "requests": [
-                {
-                    "image": {
-                        "content": base64,
-                    },
-                    features: [
-                        { type: "LANDMARK_DETECTION", maxResults: 5 },
-                    ],
-                }
-            ]
-        })
-      });
-        let json = await googleVisionRes.json();
-        try {
-          name = json["responses"][0]["landmarkAnnotations"][0]["description"];
-        } catch (error) {
-          navigation.navigate("ResultsScreen", {
-            name: "No Data Available",
-            image: "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
-            text: "No information available",
-            url : "https://google.com",
-          });
-          return;
+      let googleVisionRes = await fetch(
+        "https://vision.googleapis.com/v1/images:annotate?key=" +
+          "ENTER GOOGLE CLOUD API KEY",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            requests: [
+              {
+                image: {
+                  content: base64,
+                },
+                features: [{ type: "LANDMARK_DETECTION", maxResults: 5 }],
+              },
+            ],
+          }),
         }
+      );
+      let json = await googleVisionRes.json();
+      try {
+        name = json["responses"][0]["landmarkAnnotations"][0]["description"];
       } catch (error) {
         navigation.navigate("ResultsScreen", {
           name: "No Data Available",
-          image: "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+          image:
+            "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
           text: "No information available",
-          url : "https://google.com",
+          url: "https://google.com",
         });
         return;
       }
-    
-    console.log(name)
+    } catch (error) {
+      navigation.navigate("ResultsScreen", {
+        name: "No Data Available",
+        image:
+          "https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2250&q=80",
+        text: "No information available",
+        url: "https://google.com",
+      });
+      return;
+    }
+
+    console.log(name);
 
     try {
       let response = await fetch(
@@ -94,10 +98,11 @@ function ConfirmLibraryImage({ route, navigation }) {
         }
       );
       let json = await response.json();
-      console.log(json)
+      console.log(json);
       let { image, text, url } = json;
-      if (name === "Taj Mahal"){
-        image = "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80"
+      if (name === "Taj Mahal") {
+        image =
+          "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1051&q=80";
       }
       if (json["url"]) {
         navigation.navigate("ResultsScreen", {
@@ -110,8 +115,6 @@ function ConfirmLibraryImage({ route, navigation }) {
     } catch (error) {
       console.error(error);
     }
-
-
 
     // await tf.ready();
 
