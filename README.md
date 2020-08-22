@@ -1,6 +1,6 @@
 # Landmark
 
-app that finds info about a monument from image
+A react native application using machine learning to identify monuments and landmark sites, and offer further information and links to educate the user on historical and famous landmarks.
 
 ### Instructions
 
